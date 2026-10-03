@@ -1,0 +1,171 @@
+﻿@model VetCare.Web.Models.HistorialViewModel
+
+@{
+    ViewData["Title"] = "Historial clínico";
+}
+
+<h1 class="mb-2">Historial clínico</h1>
+<p class="text-muted">
+    Consulta las atenciones y tratamientos registrados por mascota.
+</p>
+
+<div asp-validation-summary="All"
+     class="text-danger mb-3"></div>
+
+<div class="card shadow-sm mb-4">
+    <div class="card-body">
+        <form asp-controller="Historial"
+              asp-action="Index"
+              method="get">
+            <div class="row align-items-end g-3">
+                <div class="col-md-8">
+                    <label asp-for="MascotaId" class="form-label">
+                        Mascota
+                    </label>
+                    <select asp-for="MascotaId"
+                            asp-items="Model.Mascotas"
+                            class="form-select"
+                            required>
+                        <option value="">Selecciona una mascota</option>
+                    </select>
+                </div>
+
+                <div class="col-md-4">
+                    <button type="submit" class="btn btn-primary">
+                        Consultar historial
+                    </button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
+@if (Model.Historial is not null)
+{
+    var historial = Model.Historial;
+
+    <div class="card mb-4">
+        <div class="card-header">
+            <h2 class="h4 mb-0">@historial.Nombre</h2>
+        </div>
+        <div class="card-body">
+            <dl class="row mb-0">
+                <dt class="col-sm-3">Código</dt>
+                <dd class="col-sm-9">@historial.MascotaId</dd>
+
+                <dt class="col-sm-3">Propietario</dt>
+                <dd class="col-sm-9">@historial.Propietario</dd>
+
+                <dt class="col-sm-3">Especie</dt>
+                <dd class="col-sm-9">@historial.Especie</dd>
+
+                <dt class="col-sm-3">Raza</dt>
+                <dd class="col-sm-9">@historial.Raza</dd>
+
+                <dt class="col-sm-3">Sexo</dt>
+                <dd class="col-sm-9">@historial.Sexo</dd>
+
+                <dt class="col-sm-3">Peso</dt>
+                <dd class="col-sm-9">
+                    @historial.Peso.ToString("0.00") kg
+                </dd>
+            </dl>
+        </div>
+    </div>
+
+    <h2 class="h4">Consultas registradas</h2>
+
+    @if (historial.Consultas.Count == 0)
+    {
+        <div class="alert alert-info">
+            Esta mascota todavía no tiene consultas registradas.
+        </div>
+    }
+
+    @foreach (var consulta in historial.Consultas)
+    {
+        <div class="card shadow-sm mb-4">
+            <div class="card-header">
+                <strong>Consulta #@consulta.Id</strong>
+                <span class="ms-2">
+                    @consulta.Fecha.ToString("dd/MM/yyyy HH:mm")
+                </span>
+            </div>
+
+            <div class="card-body">
+                <p>
+                    <strong>Veterinario:</strong>
+                    @consulta.Veterinario
+                </p>
+
+                <p>
+                    <strong>Cita:</strong>
+                    @(consulta.CitaId.HasValue
+                                ? $"#{consulta.CitaId.Value}"
+                                : "Atención sin cita")
+                                                  </p>
+
+                <p><strong>Motivo:</strong> @consulta.Motivo</p>
+
+                <p>
+                    <strong>Diagnóstico:</strong>
+                    @consulta.Diagnostico
+                </p>
+
+                <p>
+                    <strong>Observaciones:</strong>
+                    @(string.IsNullOrWhiteSpace(consulta.Observaciones)
+                                ? "Sin observaciones"
+                                : consulta.Observaciones)
+        </p>
+
+                <h3 class="h5 mt-4">Tratamientos</h3>
+
+        @if (consulta.Tratamientos.Count == 0)
+                {
+                    <p class="text-muted">
+                        Sin tratamientos registrados.
+                    </p>
+                }
+
+                @foreach (var tratamiento in consulta.Tratamientos)
+                {
+                    <div class="border rounded p-3 mb-3">
+                        <p>
+                            <strong>Tratamiento #@tratamiento.Id:</strong>
+                            @tratamiento.Descripcion
+                        </p>
+
+                        <p>
+                            <strong>Indicaciones:</strong>
+                            @tratamiento.Indicaciones
+                        </p>
+
+                        <p class="mb-0">
+                            <strong>Inicio:</strong>
+                            @tratamiento.FechaInicio.ToString("dd/MM/yyyy")
+                            <span class="ms-3">
+                                <strong>Finalización:</strong>
+                                @(tratamiento.FechaFin?.ToString("dd/MM/yyyy")
+                                                    ?? "No especificada")
+                </span>
+            </p>
+        </div>
+                }
+
+                <a asp-controller="Tratamientos"
+                   asp-action="Crear"
+                   asp-route-consultaId="@consulta.Id"
+                   class="btn btn-outline-primary">
+                    Agregar tratamiento
+                </a>
+            </div>
+        </div>
+    }
+}
+
+<a asp-controller="Home"
+   asp-action="Index"
+   class="btn btn-outline-secondary mb-4">
+    Volver al inicio
+</a>

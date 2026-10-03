@@ -1,0 +1,100 @@
+﻿@model VetCare.Web.Models.CrearClienteViewModel
+
+@{
+    ViewData["Title"] = "Registrar cliente";
+}
+
+<div class="row justify-content-center">
+    <div class="col-lg-7">
+        <h1 class="mb-2">Registrar cliente</h1>
+        <p class="text-muted">
+            Ingresa los datos del propietario de la mascota.
+        </p>
+
+        @if (TempData["Exito"] is string mensaje)
+        {
+            <div class="alert alert-success" role="alert">
+                @mensaje
+            </div>
+        }
+
+        <div class="card shadow-sm">
+            <div class="card-body">
+                <form asp-controller="Clientes"
+                      asp-action="Crear"
+                      method="post">
+
+                    <div asp-validation-summary="All"
+                         class="text-danger mb-3"></div>
+
+                    <div class="mb-3">
+                        <label asp-for="Nombres"
+                               class="form-label"></label>
+                        <input asp-for="Nombres"
+                               class="form-control"
+                               maxlength="100" />
+                        <span asp-validation-for="Nombres"
+                              class="text-danger"></span>
+                    </div>
+
+                    <div class="mb-3">
+                        <label asp-for="Apellidos"
+                               class="form-label"></label>
+                        <input asp-for="Apellidos"
+                               class="form-control"
+                               maxlength="100" />
+                        <span asp-validation-for="Apellidos"
+                              class="text-danger"></span>
+                    </div>
+
+                    <div class="mb-3">
+                        <label asp-for="Telefono"
+                               class="form-label"></label>
+                        <input asp-for="Telefono"
+                               class="form-control"
+                               type="tel"
+                               maxlength="20" />
+                        <span asp-validation-for="Telefono"
+                              class="text-danger"></span>
+                    </div>
+
+                    <div class="mb-3">
+                        <label asp-for="Email"
+                               class="form-label"></label>
+                        <input asp-for="Email"
+                               class="form-control"
+                               type="email"
+                               maxlength="150" />
+                        <span asp-validation-for="Email"
+                              class="text-danger"></span>
+                    </div>
+
+                    <div class="mb-3">
+                        <label asp-for="Direccion"
+                               class="form-label"></label>
+                        <textarea asp-for="Direccion"
+                                  class="form-control"
+                                  rows="3"
+                                  maxlength="250"></textarea>
+                        <span asp-validation-for="Direccion"
+                              class="text-danger"></span>
+                    </div>
+
+                    <button type="submit" class="btn btn-primary">
+                        Guardar cliente
+                    </button>
+
+                    <a asp-controller="Home"
+                       asp-action="Index"
+                       class="btn btn-outline-secondary">
+                        Volver al inicio
+                    </a>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

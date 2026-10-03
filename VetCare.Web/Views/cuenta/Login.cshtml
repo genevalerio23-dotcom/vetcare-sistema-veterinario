@@ -1,0 +1,61 @@
+﻿@model VetCare.Web.Models.LoginViewModel
+
+@{
+    ViewData["Title"] = "Iniciar sesión";
+}
+
+<div class="row justify-content-center">
+    <div class="col-md-6 col-lg-4">
+        <div class="card shadow-sm mt-4">
+            <div class="card-body p-4">
+                <h1 class="h3 text-center mb-2">Iniciar sesión</h1>
+                <p class="text-muted text-center mb-4">
+                    Accede a VetCare con tu cuenta.
+                </p>
+
+                <form asp-controller="Cuenta"
+                      asp-action="Login"
+                      method="post">
+
+                    <input asp-for="ReturnUrl" type="hidden" />
+
+                    <div asp-validation-summary="ModelOnly"
+                         class="text-danger mb-3"></div>
+
+                    <div class="mb-3">
+                        <label asp-for="Email" class="form-label"></label>
+                        <input asp-for="Email"
+                               class="form-control"
+                               autocomplete="username" />
+                        <span asp-validation-for="Email"
+                              class="text-danger"></span>
+                    </div>
+
+                    <div class="mb-3">
+                        <label asp-for="Password" class="form-label"></label>
+                        <input asp-for="Password"
+                               class="form-control"
+                               autocomplete="current-password" />
+                        <span asp-validation-for="Password"
+                              class="text-danger"></span>
+                    </div>
+
+                    <div class="form-check mb-3">
+                        <input asp-for="Recordarme"
+                               class="form-check-input" />
+                        <label asp-for="Recordarme"
+                               class="form-check-label"></label>
+                    </div>
+
+                    <button type="submit" class="btn btn-success w-100">
+                        Ingresar
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

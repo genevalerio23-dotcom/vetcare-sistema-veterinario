@@ -1,0 +1,120 @@
+﻿@model VetCare.Web.Models.CrearMascotaViewModel
+
+@{
+    ViewData["Title"] = "Registrar mascota";
+}
+
+<div class="row justify-content-center">
+    <div class="col-lg-7">
+        <h1 class="mb-2">Registrar mascota</h1>
+        <p class="text-muted">
+            Registra la mascota y selecciona a su propietario.
+        </p>
+
+        @if (TempData["Exito"] is string mensaje)
+        {
+            <div class="alert alert-success" role="alert">
+                @mensaje
+            </div>
+        }
+
+        @if (Model.Propietarios.Count == 0)
+        {
+            <div class="alert alert-warning">
+                Debes registrar un cliente antes de agregar mascotas.
+                <a asp-controller="Clientes" asp-action="Crear">
+                    Registrar cliente
+                </a>
+            </div>
+        }
+
+        <div class="card shadow-sm">
+            <div class="card-body">
+                <form asp-controller="Mascotas"
+                      asp-action="Crear"
+                      method="post">
+
+                    <div asp-validation-summary="All"
+                         class="text-danger mb-3"></div>
+
+                    <div class="mb-3">
+                        <label asp-for="ClienteId"
+                               class="form-label"></label>
+                        <select asp-for="ClienteId"
+                                asp-items="Model.Propietarios"
+                                class="form-select">
+                            <option value="">Selecciona un propietario</option>
+                        </select>
+                        <span asp-validation-for="ClienteId"
+                              class="text-danger"></span>
+                    </div>
+
+                    <div class="mb-3">
+                        <label asp-for="Nombre" class="form-label"></label>
+                        <input asp-for="Nombre"
+                               class="form-control"
+                               maxlength="100" />
+                        <span asp-validation-for="Nombre"
+                              class="text-danger"></span>
+                    </div>
+
+                    <div class="mb-3">
+                        <label asp-for="Especie" class="form-label"></label>
+                        <input asp-for="Especie"
+                               class="form-control"
+                               maxlength="50"
+                               placeholder="Ejemplo: Perro, Gato" />
+                        <span asp-validation-for="Especie"
+                              class="text-danger"></span>
+                    </div>
+
+                    <div class="mb-3">
+                        <label asp-for="Raza" class="form-label"></label>
+                        <input asp-for="Raza"
+                               class="form-control"
+                               maxlength="100" />
+                        <span asp-validation-for="Raza"
+                              class="text-danger"></span>
+                    </div>
+
+                    <div class="mb-3">
+                        <label asp-for="Sexo" class="form-label"></label>
+                        <select asp-for="Sexo" class="form-select">
+                            <option value="">Selecciona el sexo</option>
+                            <option value="Macho">Macho</option>
+                            <option value="Hembra">Hembra</option>
+                        </select>
+                        <span asp-validation-for="Sexo"
+                              class="text-danger"></span>
+                    </div>
+
+                    <div class="mb-3">
+                        <label asp-for="Peso" class="form-label"></label>
+                        <input asp-for="Peso"
+                               class="form-control"
+                               type="number"
+                               min="0.01"
+                               max="9999.99"
+                               step="0.01" />
+                        <span asp-validation-for="Peso"
+                              class="text-danger"></span>
+                    </div>
+
+                    <button type="submit" class="btn btn-primary">
+                        Guardar mascota
+                    </button>
+
+                    <a asp-controller="Home"
+                       asp-action="Index"
+                       class="btn btn-outline-secondary">
+                        Volver al inicio
+                    </a>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

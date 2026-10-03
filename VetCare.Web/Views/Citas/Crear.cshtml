@@ -1,0 +1,112 @@
+﻿@model VetCare.Web.Models.CrearCitaViewModel
+
+@{
+    ViewData["Title"] = "Agendar cita";
+}
+
+<div class="row justify-content-center">
+    <div class="col-lg-7">
+        <h1 class="mb-2">Agendar cita</h1>
+        <p class="text-muted">
+            Selecciona la mascota, el veterinario y el horario.
+            Cada cita tiene una duración de 30 minutos.
+        </p>
+
+        @if (TempData["Exito"] is string mensaje)
+        {
+            <div class="alert alert-success" role="alert">
+                @mensaje
+            </div>
+        }
+
+        @if (Model.Mascotas.Count == 0)
+        {
+            <div class="alert alert-warning">
+                Debes registrar una mascota antes de agendar una cita.
+                <a asp-controller="Mascotas" asp-action="Crear">
+                    Registrar mascota
+                </a>
+            </div>
+        }
+
+        @if (Model.Veterinarios.Count == 0)
+        {
+            <div class="alert alert-warning">
+                No hay veterinarios activos disponibles.
+            </div>
+        }
+
+        <div class="card shadow-sm">
+            <div class="card-body">
+                <form asp-controller="Citas"
+                      asp-action="Crear"
+                      method="post">
+
+                    <div asp-validation-summary="All"
+                         class="text-danger mb-3"></div>
+
+                    <div class="mb-3">
+                        <label asp-for="MascotaId"
+                               class="form-label"></label>
+                        <select asp-for="MascotaId"
+                                asp-items="Model.Mascotas"
+                                class="form-select">
+                            <option value="">Selecciona una mascota</option>
+                        </select>
+                        <span asp-validation-for="MascotaId"
+                              class="text-danger"></span>
+                    </div>
+
+                    <div class="mb-3">
+                        <label asp-for="VeterinarioId"
+                               class="form-label"></label>
+                        <select asp-for="VeterinarioId"
+                                asp-items="Model.Veterinarios"
+                                class="form-select">
+                            <option value="">Selecciona un veterinario</option>
+                        </select>
+                        <span asp-validation-for="VeterinarioId"
+                              class="text-danger"></span>
+                    </div>
+
+                    <div class="mb-3">
+                        <label asp-for="FechaHora"
+                               class="form-label"></label>
+                        <input asp-for="FechaHora"
+                               asp-format="{0:yyyy-MM-ddTHH:mm}"
+                               type="datetime-local"
+                               class="form-control"
+                               step="60" />
+                        <span asp-validation-for="FechaHora"
+                              class="text-danger"></span>
+                    </div>
+
+                    <div class="mb-3">
+                        <label asp-for="Motivo"
+                               class="form-label"></label>
+                        <textarea asp-for="Motivo"
+                                  class="form-control"
+                                  rows="3"
+                                  maxlength="250"></textarea>
+                        <span asp-validation-for="Motivo"
+                              class="text-danger"></span>
+                    </div>
+
+                    <button type="submit" class="btn btn-primary">
+                        Agendar cita
+                    </button>
+
+                    <a asp-controller="Home"
+                       asp-action="Index"
+                       class="btn btn-outline-secondary">
+                        Volver al inicio
+                    </a>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

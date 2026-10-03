@@ -1,0 +1,102 @@
+﻿@model VetCare.Web.Models.CrearTratamientoViewModel
+
+@{
+    ViewData["Title"] = "Registrar tratamiento";
+}
+
+<div class="row justify-content-center">
+    <div class="col-lg-7">
+        <h1 class="mb-2">Registrar tratamiento</h1>
+        <p class="text-muted">
+            Asocia el tratamiento a una consulta clínica existente.
+        </p>
+
+        @if (TempData["Exito"] is string mensaje)
+        {
+            <div class="alert alert-success" role="alert">
+                @mensaje
+            </div>
+        }
+
+        <div class="card shadow-sm">
+            <div class="card-body">
+                <form asp-controller="Tratamientos"
+                      asp-action="Crear"
+                      method="post">
+
+                    <div asp-validation-summary="All"
+                         class="text-danger mb-3"></div>
+
+                    <div class="mb-3">
+                        <label asp-for="ConsultaId"
+                               class="form-label"></label>
+                        <input asp-for="ConsultaId"
+                               type="number"
+                               min="1"
+                               class="form-control" />
+                        <span asp-validation-for="ConsultaId"
+                              class="text-danger"></span>
+                    </div>
+
+                    <div class="mb-3">
+                        <label asp-for="Descripcion"
+                               class="form-label"></label>
+                        <textarea asp-for="Descripcion"
+                                  rows="3"
+                                  maxlength="500"
+                                  class="form-control"></textarea>
+                        <span asp-validation-for="Descripcion"
+                              class="text-danger"></span>
+                    </div>
+
+                    <div class="mb-3">
+                        <label asp-for="Indicaciones"
+                               class="form-label"></label>
+                        <textarea asp-for="Indicaciones"
+                                  rows="4"
+                                  maxlength="2000"
+                                  class="form-control"></textarea>
+                        <span asp-validation-for="Indicaciones"
+                              class="text-danger"></span>
+                    </div>
+
+                    <div class="mb-3">
+                        <label asp-for="FechaInicio"
+                               class="form-label"></label>
+                        <input asp-for="FechaInicio"
+                               asp-format="{0:yyyy-MM-dd}"
+                               type="date"
+                               class="form-control" />
+                        <span asp-validation-for="FechaInicio"
+                              class="text-danger"></span>
+                    </div>
+
+                    <div class="mb-3">
+                        <label asp-for="FechaFin"
+                               class="form-label"></label>
+                        <input asp-for="FechaFin"
+                               asp-format="{0:yyyy-MM-dd}"
+                               type="date"
+                               class="form-control" />
+                        <span asp-validation-for="FechaFin"
+                              class="text-danger"></span>
+                    </div>
+
+                    <button type="submit" class="btn btn-primary">
+                        Guardar tratamiento
+                    </button>
+
+                    <a asp-controller="Home"
+                       asp-action="Index"
+                       class="btn btn-outline-secondary">
+                        Volver al inicio
+                    </a>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}
