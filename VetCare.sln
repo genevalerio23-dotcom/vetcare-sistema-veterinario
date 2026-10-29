@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
-VisualStudioVersion = 17.14.36414.22 d17.14
+VisualStudioVersion = 17.14.36414.22
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "VetCare.Domain", "VetCare.Domain\VetCare.Domain.csproj", "{B9B725A7-8C64-4851-A8C0-C81C473385B1}"
 EndProject
@@ -10,6 +10,13 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "VetCare.Infrastructure", "VetCare.Infrastructure\VetCare.Infrastructure.csproj", "{F3DD04C6-4E6A-4E79-8670-927957494396}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "VetCare.Web", "VetCare.Web\VetCare.Web.csproj", "{3B481D1F-6E13-47A0-A48C-F08366189D3B}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "VetCare.Tests", "VetCare.Tests\VetCare.Tests.csproj", "{8B883CE3-74D2-473D-B893-E6A0E0EF2C2D}"
+	ProjectSection(ProjectDependencies) = postProject
+		{43FD508D-4605-4B09-8BBC-680FB6D5C8F5} = {43FD508D-4605-4B09-8BBC-680FB6D5C8F5}
+		{B9B725A7-8C64-4851-A8C0-C81C473385B1} = {B9B725A7-8C64-4851-A8C0-C81C473385B1}
+		{F3DD04C6-4E6A-4E79-8670-927957494396} = {F3DD04C6-4E6A-4E79-8670-927957494396}
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -33,6 +40,10 @@ Global
 		{3B481D1F-6E13-47A0-A48C-F08366189D3B}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{3B481D1F-6E13-47A0-A48C-F08366189D3B}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{3B481D1F-6E13-47A0-A48C-F08366189D3B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8B883CE3-74D2-473D-B893-E6A0E0EF2C2D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8B883CE3-74D2-473D-B893-E6A0E0EF2C2D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8B883CE3-74D2-473D-B893-E6A0E0EF2C2D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8B883CE3-74D2-473D-B893-E6A0E0EF2C2D}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
