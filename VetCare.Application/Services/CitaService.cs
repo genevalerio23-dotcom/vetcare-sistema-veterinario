@@ -1,4 +1,5 @@
-﻿using System;
+﻿
+using System;
 using System.Threading.Tasks;
 using VetCare.Application.DTOs;
 using VetCare.Application.Interfaces;
@@ -31,12 +32,30 @@ public class CitaService : ICitaService
     {
         ArgumentNullException.ThrowIfNull(dto);
 
+        // Crear la cita aplicando las reglas del dominio
         var cita = new Cita(
             dto.MascotaId,
             dto.VeterinarioId,
             dto.FechaHora,
             dto.Motivo);
 
+        // Validar las condiciones necesarias para agendar
+        ValidarFechaFutura(cita);
+
+        await ValidarMascotaAsync(cita.MascotaId);
+
+        await ValidarVeterinarioAsync(cita.VeterinarioId);
+
+        await ValidarDisponibilidadAsync(cita);
+
+        // Guardar la cita mediante el repositorio
+        await _citaRepository.AgregarAsync(cita);
+
+        return cita.Id;
+    }
+
+    private void ValidarFechaFutura(Cita cita)
+    {
         var ahora = _reloj.GetLocalNow().DateTime;
 
         if (cita.FechaHora <= ahora)
@@ -44,9 +63,12 @@ public class CitaService : ICitaService
             throw new ReglaNegocioException(
                 "La cita debe programarse para una fecha y hora futuras.");
         }
+    }
 
-        var mascota = await _mascotaRepository.ObtenerPorIdAsync(
-            cita.MascotaId);
+    private async Task ValidarMascotaAsync(int mascotaId)
+    {
+        var mascota = await _mascotaRepository
+            .ObtenerPorIdAsync(mascotaId);
 
         if (mascota is null)
         {
@@ -59,9 +81,12 @@ public class CitaService : ICitaService
             throw new ReglaNegocioException(
                 "No se pueden agendar citas para una mascota inactiva.");
         }
+    }
 
-        var veterinario = await _veterinarioRepository.ObtenerPorIdAsync(
-            cita.VeterinarioId);
+    private async Task ValidarVeterinarioAsync(int veterinarioId)
+    {
+        var veterinario = await _veterinarioRepository
+            .ObtenerPorIdAsync(veterinarioId);
 
         if (veterinario is null)
         {
@@ -74,21 +99,21 @@ public class CitaService : ICitaService
             throw new ReglaNegocioException(
                 "El veterinario seleccionado está inactivo.");
         }
+    }
 
-        var existeConflicto = await _citaRepository.ExisteConflictoAsync(
-            cita.VeterinarioId,
-            cita.MascotaId,
-            cita.FechaHora,
-            cita.FechaHoraFin);
+    private async Task ValidarDisponibilidadAsync(Cita cita)
+    {
+        var existeConflicto = await _citaRepository
+            .ExisteConflictoAsync(
+                cita.VeterinarioId,
+                cita.MascotaId,
+                cita.FechaHora,
+                cita.FechaHoraFin);
 
         if (existeConflicto)
         {
             throw new ReglaNegocioException(
                 "El veterinario o la mascota ya tiene una cita en ese horario.");
         }
-
-        await _citaRepository.AgregarAsync(cita);
-
-        return cita.Id;
     }
 }
